@@ -1,0 +1,6 @@
+.enter-form__form {
+    display: flex;
+    flex-direction: column;
+    gap: 31px;
+    margin-bottom: 219px;
+}

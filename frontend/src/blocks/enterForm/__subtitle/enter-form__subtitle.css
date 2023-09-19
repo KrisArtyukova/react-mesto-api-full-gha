@@ -1,0 +1,11 @@
+.enter-form__subtitle {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    width: 358px;
+    height: 17px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+}

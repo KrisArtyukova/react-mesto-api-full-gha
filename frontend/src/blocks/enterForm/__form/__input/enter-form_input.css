@@ -1,0 +1,15 @@
+.enter-form__input {
+    background: transparent;
+    outline: none;
+    min-width: 358px;
+    min-height: 14px;
+    border: none;
+    border-bottom: 2px solid  rgba(204, 204, 204, 1);
+    color: #000;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    padding: 0;
+    padding-bottom: 6px;
+    color: #fff;
+}

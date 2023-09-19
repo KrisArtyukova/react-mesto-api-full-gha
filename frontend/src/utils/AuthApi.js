@@ -44,7 +44,7 @@ class AuthApi {
   async checkAuth() {
     const token = localStorage.getItem(USER_TOKEN);
     if (!token) throw new Error('Отсутствует токен');
-    
+
     return await this._request("users/me", {
       method: 'GET',
       headers: { ...this._headers, "Authorization": `Bearer ${token}`},
@@ -54,7 +54,7 @@ class AuthApi {
 }
 
 export const authApi = new AuthApi({
-  baseUrl: 'https://auth.nomoreparties.co',
+  baseUrl: 'https://localhost:3000/api',
   headers: {
     'Content-Type': 'application/json'
   }

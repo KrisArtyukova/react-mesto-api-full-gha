@@ -18,7 +18,7 @@ class Api {
   }
 
   getInitialCards() {
-    return this._request("/cards", {
+    return this._request("cards", {
       headers: {
         authorization: this._headers.authorization,
       }
@@ -26,7 +26,7 @@ class Api {
   }
 
   async addCard(name, link) {
-    return await this._request("/cards", {
+    return await this._request("cards", {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
@@ -37,7 +37,7 @@ class Api {
   }
 
   async deleteCard(id) {
-    return await this._request(`/cards/${id}`, {
+    return await this._request(`cards/${id}`, {
       method: 'DELETE',
       headers: {
         authorization: this._headers.authorization,
@@ -46,7 +46,7 @@ class Api {
   }
 
   async addLike(id) {
-    return await this._request(`/cards/${id}/likes`, {
+    return await this._request(`cards/${id}/likes`, {
       method: 'PUT',
       headers: {
         authorization: this._headers.authorization,
@@ -55,7 +55,7 @@ class Api {
   }
 
   async deleteLike(id) {
-    return await this._request(`/cards/${id}/likes`, {
+    return await this._request(`cards/${id}/likes`, {
       method: 'DELETE',
       headers: {
         authorization: this._headers.authorization,
@@ -64,7 +64,7 @@ class Api {
   }
 
   async getUserInfo() {
-    return await this._request("/users/me", {
+    return await this._request("users/me", {
       headers: {
         authorization: this._headers.authorization,
       }
@@ -72,7 +72,7 @@ class Api {
   }
 
   async editUserInfo(name, about) {
-    return await this._request("/users/me", {
+    return await this._request("users/me", {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
@@ -83,7 +83,7 @@ class Api {
   }
 
   async editUserAvatar(avatar) {
-    return await this._request("/users/me/avatar", {
+    return await this._request("users/me/avatar", {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({

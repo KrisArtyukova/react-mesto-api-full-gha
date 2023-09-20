@@ -1,3 +1,5 @@
+import {USER_TOKEN} from "./constants";
+
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
@@ -97,7 +99,7 @@ class Api {
 export const api = new Api({
   baseUrl: 'http://krisMestoBack.nomoredomainsrocks.ru',
   headers: {
-    authorization: 'ad409708-ab6d-48ec-b3a6-3e6c2313ee38',
+    authorization: localStorage.getItem(USER_TOKEN),
     'Content-Type': 'application/json'
   }
 });

@@ -1,9 +1,10 @@
 module.exports = (req, res, next) => {
 // Массив доменов, с которых разрешены кросс-доменные запросы
   const allowedCors = [
-    'http://krismesto.nomoredomainsrocks.ru/',
-    'https://krismesto.nomoredomainsrocks.ru/',
+    'http://krismesto.nomoredomainsrocks.ru',
+    'https://krismesto.nomoredomainsrocks.ru',
     'localhost:3000',
+    'http://localhost:3001',
   ];
 
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
@@ -22,6 +23,9 @@ module.exports = (req, res, next) => {
       // разрешаем кросс-доменные запросы с этими заголовками
       res.header('Access-Control-Allow-Headers', requestHeaders);
       // завершаем обработку запроса и возвращаем результат клиенту
+      // устанавливаем заголовок, который разрешает браузеру запросы с этого источника
+      res.header('Access-Control-Allow-Origin', origin);
+
       return res.end();
     }
     // устанавливаем заголовок, который разрешает браузеру запросы с этого источника

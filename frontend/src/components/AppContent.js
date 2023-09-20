@@ -19,7 +19,7 @@ function AppContent() {
     name: '',
     about: '',
     avatar: defaultAvatar
-  });  
+  });
   const [isUserUpdateLoading, setIsUserUpdateLoading] = React.useState(false);
   const [isAvatarUpdateLoading, setIsAvatarUpdateLoading] = React.useState(false);
   const [isPlaceUpdateLoading, setIsPlaceUpdateLoading] = React.useState(false);
@@ -31,7 +31,7 @@ function AppContent() {
   useEffect(() => {
     api.getUserInfo()
     .then((userInfo) => {
-      setUserInfo(userInfo);
+      setUserInfo(userInfo.data);
     })
     .catch(() => {
       console.log('Ошибка загрузки пользователя')
@@ -39,7 +39,7 @@ function AppContent() {
 
     api.getInitialCards()
     .then((cards) => {
-        setCards(cards);
+        setCards(cards.data);
     })
     .catch(() => {
         console.log('Ошибка загрузки карточек')
@@ -49,17 +49,19 @@ function AppContent() {
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    
+
     // Отправляем запрос в API и получаем обновлённые данные карточки
     if (isLiked) {
-      api.deleteLike(card._id).then((newCard) => {
+      api.deleteLike(card._id).then((newCardData) => {
+        const newCard = newCardData.data;
         setCards((state) => state.map((stateCard) => stateCard._id === card._id ? newCard : stateCard));
       })
       .catch((error) => {
         console.log('Произошла ошибка при удалении лайка', error);
       })
     } else {
-      api.addLike(card._id).then((newCard) => {
+      api.addLike(card._id).then((newCardData) => {
+        const newCard = newCardData.data;
         setCards((state) => state.map((stateCard) => stateCard._id === card._id ? newCard : stateCard));
       })
       .catch((error) => {
@@ -76,7 +78,7 @@ function AppContent() {
     .catch((error) => {
       console.log('Произошла ошибка при удалении карточки', error);
     })
-  } 
+  }
 
   function handleCardClick(card) {
     setSelectedCard(card)
@@ -86,7 +88,7 @@ function AppContent() {
     setIsUserUpdateLoading(true);
     api.editUserInfo(userInfo.name, userInfo.about)
     .then((newUserInfo) => {
-      setUserInfo(newUserInfo);
+      setUserInfo(newUserInfo.data);
       closeAllPopups();
     })
     .catch(() => {
@@ -99,7 +101,7 @@ function AppContent() {
     setIsAvatarUpdateLoading(true);
     api.editUserAvatar(avatar)
     .then((newUser) => {
-      setUserInfo(newUser);
+      setUserInfo(newUser.data);
       closeAllPopups();
     })
     .catch(() => {
@@ -112,7 +114,7 @@ function AppContent() {
     setIsPlaceUpdateLoading(true);
     api.addCard(cardName, cardLink)
     .then((newCard) => {
-      setCards([newCard, ...cards]); 
+      setCards([newCard.data, ...cards]);
       closeAllPopups();
     })
     .catch(() => {
@@ -146,30 +148,30 @@ function AppContent() {
         <Header currentPage={mainPage} />
         <CurrentCardContext.Provider value={cards}>
           <Main
-            onEditProfile={handleEditProfileClick} 
-            onAddPlace={handleAddPlaceClick} 
-            onEditAvatar={handleEditAvatarClick} 
-            handleCardClick={handleCardClick} 
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            handleCardClick={handleCardClick}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
           />
         </CurrentCardContext.Provider>
-        <EditProfilePopup 
-          isOpen={isEditProfilePopupOpen} 
-          onClose={closeAllPopups} 
-          onUpdateUser={handleUpdateUser} 
-          loading={isUserUpdateLoading} 
-        />
-        <AddPlacePopup 
-          isOpen={isAddPlacePopupOpen} 
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
-          onAddCard={handleAddPlaceSubmit} 
-          loading={isPlaceUpdateLoading} 
+          onUpdateUser={handleUpdateUser}
+          loading={isUserUpdateLoading}
         />
-        <EditAvatarPopup 
-          isOpen={isEditAvatarPopupOpen} 
-          onClose={closeAllPopups} 
-          onUpdateAvatar={handleUpdateAvatar} 
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddCard={handleAddPlaceSubmit}
+          loading={isPlaceUpdateLoading}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
           loading={isAvatarUpdateLoading}
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />

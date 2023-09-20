@@ -22,7 +22,7 @@ class Api {
   getInitialCards() {
     return this._request("cards", {
       headers: {
-        authorization: this._headers.authorization,
+        authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`,
       }
     });
   }
@@ -30,7 +30,7 @@ class Api {
   async addCard(name, link) {
     return await this._request("cards", {
       method: 'POST',
-      headers: this._headers,
+      headers: { ...this._headers, authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`},
       body: JSON.stringify({
         name,
         link,
@@ -42,7 +42,7 @@ class Api {
     return await this._request(`cards/${id}`, {
       method: 'DELETE',
       headers: {
-        authorization: this._headers.authorization,
+        authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`,
       }
     });
   }
@@ -51,7 +51,7 @@ class Api {
     return await this._request(`cards/${id}/likes`, {
       method: 'PUT',
       headers: {
-        authorization: this._headers.authorization,
+        authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`,
       }
     });
   }
@@ -60,7 +60,7 @@ class Api {
     return await this._request(`cards/${id}/likes`, {
       method: 'DELETE',
       headers: {
-        authorization: this._headers.authorization,
+        authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`,
       }
     });
   }
@@ -68,7 +68,7 @@ class Api {
   async getUserInfo() {
     return await this._request("users/me", {
       headers: {
-        authorization: this._headers.authorization,
+        authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`,
       }
     });
   }
@@ -76,7 +76,7 @@ class Api {
   async editUserInfo(name, about) {
     return await this._request("users/me", {
       method: 'PATCH',
-      headers: this._headers,
+      headers: { ...this._headers, authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`},
       body: JSON.stringify({
         name,
         about,
@@ -87,7 +87,7 @@ class Api {
   async editUserAvatar(avatar) {
     return await this._request("users/me/avatar", {
       method: 'PATCH',
-      headers: this._headers,
+      headers: { ...this._headers, authorization: `Bearer ${localStorage.getItem(USER_TOKEN)}`},
       body: JSON.stringify({
         avatar,
       })
@@ -97,9 +97,8 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: 'http://krisMestoBack.nomoredomainsrocks.ru',
+  baseUrl: 'https://krismestoback.nomoredomainsrocks.ru',
   headers: {
-    authorization: localStorage.getItem(USER_TOKEN),
     'Content-Type': 'application/json'
   }
 });

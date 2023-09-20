@@ -11,7 +11,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, handleCardClick, onCardL
     return (
         <main className="main">
             <section className="profile">
-            <div className="profile__avatar" style={{ backgroundImage: `url(${currentUser.avatar})` }} onClick={onEditAvatar}>
+            <div className="profile__avatar" style={{ backgroundImage: `url(${currentUser?.avatar})` }} onClick={onEditAvatar}>
                 <div className="profile__avatar-edit">
                 <img src={avatarEdit} alt="Логотип Место" />
                 </div>
@@ -26,7 +26,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, handleCardClick, onCardL
             <button type="button" aria-label="Добавить карточку" className="profile__btn-add" onClick={onAddPlace}></button>
             </section>
             <section className="elements">
-                {cards?.map(card => <Card card={card} onCardClick={handleCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} key={card._id} />)}
+                {cards?.length && cards?.map(card => <Card card={card} onCardClick={handleCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} key={card._id} />)}
             </section>
         </main>
     );

@@ -54,7 +54,7 @@ class AuthApi {
 }
 
 export const authApi = new AuthApi({
-  baseUrl: 'http://krisMestoBack.nomoredomainsrocks.ru',
+  baseUrl: 'https://krismestoback.nomoredomainsrocks.ru',
   headers: {
     'Content-Type': 'application/json'
   }

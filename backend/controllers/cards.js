@@ -1,13 +1,13 @@
 const Card = require('../models/card');
 const { errorHandler } = require('../errors/errorHandler');
 const {
-  NotFound, NotFoundError, InternalServerError,
+  NotFound, NotFoundError, InternalServerError, Created,
 } = require('../errors/errorCodes');
 const { defaultErrorMessages } = require('../errors/errorHandler');
 
 const getCards = (req, res) => {
   Card.find({})
-    .populate('owner')
+    .populate(['owner', 'likes'])
     .then((card) => res.send({ data: card }))
     .catch((err) => errorHandler(err, res, {
       ...defaultErrorMessages,
@@ -35,7 +35,14 @@ const deleteCard = (req, res) => {
 const createCard = (req, res) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.send({ data: card }))
+    .then((card) => {
+      card
+        .populate('owner')
+        .then(() => {
+          res.status(Created);
+          res.send({ data: card });
+        });
+    })
     .catch((err) => errorHandler(err, res, {
       ...defaultErrorMessages,
       [NotFoundError]: 'Не найдено',
@@ -48,13 +55,15 @@ const setLike = (req, res) => {
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
-  ).then((card) => {
-    if (!card) {
-      res.status(NotFound).send({ message: 'Карточка не найдена' });
-    } else {
-      res.send({ data: card });
-    }
-  })
+  )
+    .populate(['owner', 'likes'])
+    .then((card) => {
+      if (!card) {
+        res.status(NotFound).send({ message: 'Карточка не найдена' });
+      } else {
+        res.send({ data: card });
+      }
+    })
     .catch((err) => errorHandler(err, res, {
       ...defaultErrorMessages,
       [NotFoundError]: 'Не найдено',
@@ -67,13 +76,15 @@ const unsetLike = (req, res) => {
     req.params.cardId,
     { $pull: { likes: req.user._id } },
     { new: true },
-  ).then((card) => {
-    if (!card) {
-      res.status(NotFound).send({ message: 'Карточка не найдена' });
-    } else {
-      res.send({ data: card });
-    }
-  })
+  )
+    .populate(['owner', 'likes'])
+    .then((card) => {
+      if (!card) {
+        res.status(NotFound).send({ message: 'Карточка не найдена' });
+      } else {
+        res.send({ data: card });
+      }
+    })
     .catch((err) => errorHandler(err, res, {
       ...defaultErrorMessages,
       [NotFoundError]: 'Не найдено',

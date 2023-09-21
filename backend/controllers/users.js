@@ -4,6 +4,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const ConflictError = require('../errors/conflict-err');
+const { Created } = require('../errors/errorCodes');
 
 const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
@@ -41,7 +42,10 @@ const createUser = (req, res, next) => {
       email,
       password: hash, // записываем хеш в базу
     }))
-    .then((user) => res.send({ data: { user } }))
+    .then((user) => {
+      res.status(Created);
+      res.send({ data: { user } });
+    })
     .catch((error) => {
       if (error.code === 11000) {
         throw new ConflictError('Такой email уже существует');

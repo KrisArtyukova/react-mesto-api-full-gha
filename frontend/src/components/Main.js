@@ -26,7 +26,7 @@ function Main({onEditProfile, onAddPlace, onEditAvatar, handleCardClick, onCardL
             <button type="button" aria-label="Добавить карточку" className="profile__btn-add" onClick={onAddPlace}></button>
             </section>
             <section className="elements">
-                {cards?.length && cards?.map(card => <Card card={card} onCardClick={handleCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} key={card._id} />)}
+                {cards?.length ? cards?.map(card => <Card card={card} onCardClick={handleCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} key={card._id} />) : null}
             </section>
         </main>
     );
